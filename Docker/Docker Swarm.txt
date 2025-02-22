@@ -1,0 +1,180 @@
+Docker Swarm Introduction :--
+
+➢ Problem Statement :
+	○ How to Scale Containers?
+	○ How to manage Containers or re-create if they Fails/Crash?
+	○ How to Upgrade the Service with Zero DownTime?
+	○ How to Manage Containers on VMs, Nodes?
+
+➢ Docker Swarm :
+➢ Docker Swarm is a clustering and scheduling tool for Docker containers.
+➢ Swarm is Docker’s native support for orchestrating clusters of Docker engines.
+➢ Orchestration : Define nodes. Define services. Set how many nodes you want to run and where, and you’re done.
+➢ At a high level, Swarm takes multiple Docker Engines running on different hosts and lets you use them together.
+
+➢ Docker Swarm : Docker Swarm have Two Type of Nodes
+	Master(Manager) and Worker.
+➢ Every swarm starts out with one manager node designated as the leader.
+➢ Swarm is highly available thanks to its implementation of the Raft algorithm.
+➢ Raft Algo : Raft is a consensus algorithm designed to achieve fault tolerance in distributed systems. The leader node is constantly checking in with its fellow manager nodes and syncing their states.
+
+➢ Nodes and Roles: In Raft, a cluster consists of multiple nodes, and each node can have one of three roles: leader, follower, or candidate.
+	There is one leader at a time, and followers replicate the leader's actions.
+➢ Leader Election: Algorithm starts with all nodes in the follower state.
+	○ If a follower doesn't receive communication from a leader for a certain period (election timeout), it transitions to the candidate state and requests votes from other nodes to become the leader.
+	○ If a candidate receives votes from the majority of the nodes, it becomes the leader.
+
+➢ Handling Failures:
+	○ If a leader fails, a new leader is elected through the election process.
+	○ Nodes can detect inconsistencies and missing entries in their logs and update them by replicating the logs from the leader.
+
+➢ Task Scheduling
+➢ Load Balancing
+➢ Rolling Updates
+➢ Security
+
+---------------------------------
+
+Docker Swarm Terminology:--
+
+➢ Docker Swarm : The cluster management and orchestration features embedded in the Docker Engine are built using swarmkit.
+➢ A swarm consists of multiple Docker hosts which run in swarm mode and act as managers (to manage membership and delegation) and workers (which run swarm services).
+➢ Host : Docker host can be a manager, a worker, or perform both roles.
+➢ Service : When you create a service, you define its optimal state (number of replicas, network and storage resources available to it, ports the service exposes to the outside world, and more). 
+
+➢ Docker Swarm :Docker Swarm maintains the Service Desired State. For instance, if a worker node becomes unavailable, Docker schedules that node’s tasks on other nodes.
+➢ Task : Task is a running container which is part of a swarm service and managed by a swarm manager.
+➢ Nodes : A node is an instance of the Docker engine participating in the swarm.
+➢ You can run one or more nodes on a single physical computer or cloud server, but production swarm deployments typically include Docker nodes distributed across multiple physical and cloud machines.
+➢ To deploy your application to a swarm, you submit a service definition to a manager node. The manager node dispatches units of work called tasks to worker nodes.
+➢ Manager nodes also perform the orchestration and cluster management functions required to maintain the desired state of the swarm. Manager nodes elect a single leader to conduct orchestration tasks.
+➢ Worker nodes receive and execute tasks dispatched from manager nodes.
+➢ Service : A service is the definition of the tasks to execute on the manager or worker nodes.
+➢ When you create a service, you specify which container image to use and which commands to execute inside running containers.
+➢ Task : A task carries a Docker container and the commands to run inside the container.
+➢ Once a task is assigned to a node, it cannot move to another node. It can only run on the assigned node or fail.
+➢ Load Balancing : Swarm manager uses ingress load balancing to expose the services you want to make available externally to the swarm.
+➢ External components, such as cloud load balancers, can access the service on the Published Port of any node in the cluster whether or not the node is currently running the task for the service.
+➢ All nodes in the swarm route ingress connections to a running task instance.
+
+------------------------------------
+
+Docker Swarm Initialisation, Commands:--
+
+➢ Initialize Docker Swarm docker
+	swarm init
+➢ Docker Swarm Commands and Application.
+
+docker swarm init or docker swarm init --advertise-addr 35.154.37.236
+
+	To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-68hg6tg01xl3lj3fo1jsfl5jiil6zec9qcscwsagyw1z7j5ngq-b45igzd9nj983wwpntklc7v5o 172.31.1.105:2377
+
+	To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+docker info
+	Swarm: active
+
+------------------------------------
+
+Create Service on Docker Swarm :--
+
+➢ Docker Service Commands
+➢ Create Docker Service
+	docker service create
+➢ List all running services in Docker Host docker
+	service ls
+➢ Start some Services on Docker Swarm Host
+➢ Identify running Container for the Service
+	docker service ps
+➢ Scale Up the services
+	docker service update <service_name> - -replicas <Number of Services>
+➢ Verify Auto Scale with Swarm
+
+	PRATICAL :--
+		1. docker service ls
+		2. docker service create alpine ping www.google.com
+		3. docker service ls
+		4. docker service ps
+		5. docker service ps x5eoi9vqnl4k
+		6. hostnamectl set-hostname docker-machine
+		7. docker service inspect hostnamectl x5eoi9vqnl4k
+		8. docker service update x5eoi9vqnl4k replicas 3
+		9. docker service ls
+		10. docker service ps x5eoi9vqnl4k
+		11. docker container ps
+		12. docker container rm -f 54c86a5a4690
+		13. docker service ps x5eoi9vqnl4k : You can see 1 more container is created.
+		14. docker service rollback x5eoi9vqnl4k : It will rollback to previous container
+		15. docker service ps x5eoi9vqnl4k
+
+-----------------------------------------
+
+Create Docker Swarm Cluster | Complete Configuration :--
+
+➢ Digital Ocean + Docker Install
+➢ RollOut machine on Cloud like AWS, Google, Azure, DO etc.
+➢ Install Docker CE on Worker Nodes
+➢ Add user to Docker Group
+	sudo usermod -aG docker <username>
+	
+➢ Find all the Commands work on Docker Swarm Node
+	docker node --help
+➢ Get Token at runtime:
+	docker swarm join-token manager
+➢ Switch Manager Node in Docker
+	docker node update - -role manager <node_name>
+➢ Create Docker Service with Replicas
+	docker service create --replicas <Number of Replica> <Image> <Command>
+➢ Verify Which Node is running, which containers
+	docker service ps <service_name>
+
+PRATICAL :--
+	STEP 1 : Create 1 Ubuntu Machine for Docker Node.
+	STEP 2 : cat /etc/os-rep; : check the OS Version
+	STEP 3 : https://docs.docker.com/engine/install/ubuntu/
+	STEP 4 : Install using the apt repository
+	
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+	STEP 5 : Install the Docker packages.
+		sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	STEP 6 : docker node ls
+	STEP 7 : docker swarm join-token manager : To get the token details
+	STEP 8 : To add a manager to this swarm, run the following command:
+		docker swarm join --token SWMTKN-1-68hg6tg01xl3lj3fo1jsfl5jiil6zec9qcscwsagyw1z7j5ngq-2d1iko4lm8rgqly9xglmusl20 172.31.1.105:2377
+	STEP 9 : Go to the node machine and run above command : This node joined a swarm as a manager.
+	STEP 10 : docker node ls : MANAGER STATUS is Reachable for docker node
+	STEP 11 : docker node promote : Promote one or more nodes to manager in the swarm
+	STEP 12 : docker node promote node1 : Worker node can't be used to view or modify cluster status.
+	STEP 13 : docker node demote node1 : Manager node1 demoted in the swarm
+	STEP 14 : docker node ps
+	STEP 15 : docker service create --replicas 10 alpine ping www.google.com
+	STEP 16 : docker service ls
+	STEP 17 : docker service ps 8foh91l92cl0
+	STEP 18 : docker container ls
+
+--------------------------------------
+
+Visualizing Cluster State using Docker Swarm Visualizer:--
+
+➢ Executing a visualizer on Docker Swarm involves using a tool that can provide a graphical representation of your Docker Swarm cluster.
+➢ Popular tool for this purpose is "dockersamples/visualizer"
+➢ Write a Compose file.
+➢ Execute Compose file as Stack on Docker Swarm.
+	docker stack deploy -c docker-compose.yml visualizer
+
+	

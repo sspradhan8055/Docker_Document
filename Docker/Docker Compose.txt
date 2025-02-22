@@ -1,0 +1,136 @@
+➢ Execute Docker Run Command for Each Container ?
+➢ Execute Docker Build Command for each Image every time?
+➢ Single Command for all Image Building and Container Creation. 
+➢ Manage the whole Application Lifecycle.
+	-> Start, Stop and Rebuild Services.
+	-> View the Status of Running Services.
+	-> Stream the Log output of Running Services.
+	-> Run a one-off command on a service.
+
+➢ YAML File Overview.
+	-> YAML files are composed of maps and lists.
+	-> Indentation matters (be Consistent)
+	-> Always use spaces
+➢ Maps:
+	-> name: value pairs
+	-> Maps can contain other maps for more complex data structure
+➢ Lists:
+	-> Sequence of Items
+	-> Multiple Maps can be defined in list
+
+➢ Docker Compose is a tool for defining and running multi-container Docker applications.
+	-> It allows you to define an entire application stack, including services, networks, and volumes, in a single file called ‘docker-compose.yml’.
+➢ key concepts and components of a Docker Compose file:
+➢ Version : The version of the Docker Compose file syntax. This version indicates which features and syntax are supported.
+➢ Services : This section defines the various containers (services) that make up your application. Each service has a name, and under each service, you can configure parameters such as the Docker image to use, environment variables, ports to expose, volumes to mount, and more.
+
+	services:
+ 		web:
+ 			image: nginx:latest
+			ports:
+ 				- "80:80"
+ 
+➢ Volumes : This section allows you to define named volumes or bind mounts for your services. Volumes are used to persist data between container restarts.
+	volumes:
+ 	 data-volume:
+➢ Networks : This section lets you define custom networks and connect services to them. This is useful for controlling communication between
+	services.
+	networks:
+ 	 custom-network:
+
+➢ Environment Variables : You can set environment variables for your services using the ‘environment’ key. This is useful for configuring your applications dynamically.
+	environment:
+ 	 - NODE_ENV=production
+➢ Ports : This key allows you to map ports from the host to the container. This is essential for accessing services from outside the Docker
+	environment.
+	ports:
+ 	 - "80
+➢ Command : This key lets you override the default command for the container. This is useful when you need to specify how the container should start.
+	command: npm start
+	
+	
+	
+-------------------------
+
+➢ Normal Flow:
+	Docker file → Docker Build Command → Docker Image
+➢ Build Image in Docker Compose Workflow -
+	docker-compose build
+	docker compose build
+➢ Docker Compose Build Properties
+➢ build/context : It defines either a path to a directory containing a Dockerfile, or a URL to a git repository.
+build:
+ context: ./dir
+services:
+ webapp:
+ build: https://github.com/mycompany/webapp.git
+
+➢ Image : Overrides the image name specified in the Dockerfile.
+ build:
+  context: .
+  dockerfile: Dockerfile.dev
+ image: custom-image-name:tag
+➢ dockerfile : Specifies an alternative Dockerfile for the build.
+ build:
+  context: .
+  dockerfile: Dockerfile.dev
+➢ args : Passes build arguments to the build context. Useful for dynamically setting values during the build.
+ARG GIT_COMMIT
+RUN echo "Based on commit: $GIT_COMMIT"
+build:
+ context: .
+ args:
+  GIT_COMMIT: cdc3b19
+build:
+ context: .
+ args:
+  - GIT_COMMIT=cdc3b19
+
+➢ tags : This defines a list of tag mappings that must be associated to the build image.
+tags:
+ - "myimage:mytag"
+ - "registry/username/myrepos:my-other-tag"
+
+-------------------------------
+
+Build Images with Docker Compose
+
+PRATICAL :--
+	
+	STEP 1 : docker clone https://github.com/sspradhan8055/Docker_Doc.git
+	STEP 2 : /home/ubuntu/Docker_for_DevOps/docker_compose_build_image
+	STEP 3 : docker compose version
+	STEP 4 : docker compose --help
+	STEP 5 : docker compose build
+	STEP 6 : docker images
+	STEP 7 : docker compose up
+	STEP 8 : docker ps -a
+	STEP 9 : docker compose down
+	STEP 10 : docker compose start 
+	STEP 11 : docker compose stop
+	STEP 12 : docker compose push
+
+Execute Wordpress and MySQL using Docker Compose
+
+	STEP 1 : /home/ubuntu/Docker_for_DevOps/docker_compose_wordpress_mysql
+	STEP 2 : docker compose up
+	STEP 3 : http://35.154.37.236:8080/
+	STEP 4 : Workpress Install
+	STEP 5 : docker compose down
+	STEP 6 : docker ps -a
+	STEP 7 : docker compose up -d
+
+Docker Compose - View Container Logs:--
+
+➢ View the Logs of all Docker Compose Services.
+	docker compose logs
+➢ View the Logs of all Docker Compose Specific Services.
+	docker-compose logs [service …]
+➢ Limit Container log output.
+	docker-compose logs --tail=10
+➢ Follow the Container log output.
+	docker-compose logs --follow
+➢ Using Docker Exec to shell into a Container -
+	docker exec -it <container_id/name> sh or /bin/bash
+➢ Shell into container with Docker Compose -
+	docker compose exec <service_name> <shell>

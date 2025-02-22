@@ -1,0 +1,433 @@
+What is Jenkins
+➢ Jenkins is an open-source Continuous Integration server written in Java for orchestrating a chain of actions to achieve the Continuous Integration process in an automated fashion.
+➢ Jenkins supports the complete development life cycle of software from building, testing, deploying the software.
+➢ Jenkins is a feature Rich Application, which help organization in fast s/w delivery
+
+CI with Jenkins
+➢ Code Built and Test as soon as Developer Commit the Changes.
+➢ Auto Deployment on Successful Software Build and Notify Stakeholders.
+➢ Notify Errors to Development team on Build Failure.
+➢ Automating Build Process saving the Delivery Time and reduce the Defects.
+
+ Installing OpenJDK for Jenkins Installation
+ 
+ 	1. sudo apt update 
+	2. sudo apt install fontconfig openjdk-17-jre
+	3. Debian/Ubuntu
+		On Debian and Debian-based distributions like Ubuntu you can install Jenkins through apt.
+	4. 
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+	5. sudo apt-get update
+	6. sudo apt install fontconfig
+	7. sudo apt-get install jenkins
+	8. sudo systemctl enable jenkins 
+		sudo systemctl start jenkins 
+		sudo systemctl status jenkins 
+	9. http://3.110.218.55:8080/
+	10. Unlock Jenkins :-
+		To ensure Jenkins is securely set up by the administrator, a password has been written to the log (not sure where to find it?) and this file on the server:
+		/var/lib/jenkins/secrets/initialAdminPassword : Please copy the password from either location and paste it below.
+		cat /var/lib/jenkins/secrets/initialAdminPassword -> Copy the password
+	11. Customize Jenkins -> Install suggested plugins
+	12. Create First Admin User
+	13. Instance Configuration
+	14. Jenkins URL: http://3.110.218.55:8080/
+
+What is Job:--
+
+-> Jenkins is any runnable task that is controlled by Jenkins
+-> FreeStyle Project -
+	This is a Most Common Type of Project. Build Type for this project is generally execute a shell(Linux) or Bash (Windows) command.
+-> Pipeline -
+	These type of Projects used to called a Workflow. These Projects are normally written in DSL.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Create a freestyle project : 
+
+	1. General -> Description : This is my First Sample Job for testing -> Build Steps -> Execute shell : echo "Hello Team, This is my First Jenkins Job!!! " -> Apply -> Save
+	2. Build Now.
+	
+	
+General :--
+	1. Discard old builds -> Strategy -> Log Rotation
+	2. Days to keep builds : if not empty, build records are only kept up to this number of days -> 30
+	3. Max # of builds to keep : if not empty, only up to this number of build records are kept -> 10
+	4. GitHub project : Project url or Github URL
+	5. This project is parameterised :- You can add multiple parameter as per your requirements
+	6. Throttle builds -> Number of builds : 1 ->  Approximately 60 minutes between builds -> Time period -> Second
+	7. Execute concurrent builds if necessary -> user can execute multiple time at a time
+
+Source Code Management :--
+
+	1. Git -> Repositories
+	2. Repository URL -> Enter your Github URL to download the code
+	3. Build Triggers:-
+		1. Trigger builds remotely (e.g., from scripts) : Trigger builds remotely (e.g., from scripts)
+		2. Build after other projects are build -> Projects to watch
+		3. Build periodically -> Schedule : * * * * * -> really mean "every minute" when you say "* * * * *"
+		4. GitHub hook trigger for GITScm polling
+		5. Poll SCM -> Schedule
+
+
+Build Environment :--
+	
+	1. Delete workspace before build starts : It will delete old file when you execute new file
+	2. Use secret text(s) or file(s) : 
+	3. Add timestamps to the Console Output
+	4. Inspect build log for published build scans
+	5. Terminate a build if it's stuck : Build will terminate if it is stuck -> Time-out strategy -> Timeout minutes : 3
+
+
+Build Steps :--
+	
+	1. Execute shell -> Command : echo "Hello Team, This is my First Jenkins Job!!! "
+	2. Executive Windows Batch Command
+	
+Post-build Actions :--
+	
+	1. Aggregate downstream test results -> Automatically aggregate all downstream tests
+	2. Archive the artifacts -> Files to archive -> Give the path
+	3. Build other projects -> Projects to build -> Trigger only if build is stable
+	4. Git Publisher -> Push Only If Build Succeeds
+	5. E-mail Notification -> Send e-mail for every unstable build -> Send separate e-mails to individuals who broke the build
+	6. Delete workspace when build is done
+
+
+Create a freestyle project : 
+
+	1. General -> Description : This is my First Sample Job for testing
+	2. Discard old builds -> Strategy -> Days to keep builds : 30 -> Max # of builds to keep : 10
+	3. Build periodically : * * * * * -> every minute
+	4. Delete workspace before build starts
+	5. Add timestamps to the Console Output
+	6. Terminate a build if it's stuck -> Timeout minutes : 3 
+	7. Build Steps -> Execute shell : echo "Hello Team, This is my First Jenkins Job!!! " -> Apply -> Save
+	2. Now automatically Job will run every minute with Timestamp.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Create a Job for script windows batch command :--
+	1. In the Local Machine -> cd /tmp/ 
+	2. nano testscript.sh 
+		#!/bin/bash 
+		Name=$1 
+		Age=$2 
+		echo "Hello I am $Name, and I am $Age years old." 
+	3. chmod 777 testscript.sh
+	Now change in Jenkin Portal
+	4. Execute shell
+		Some changes in Shell: 
+		Name=Sudha 
+		Age=33 
+		/tmp/testscript.sh $Name $Age 
+	5. Save > Build the Jonb > Console Output 
+	
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Building Application with Freestyle Jobs:--
+
+	In Jenkins Server :--
+	
+	1. Sudo apt-get install git 
+	2. sudo apt-get install man 
+	3. git clone https://github.com/anshulc55/Jenkins_Upgradev3.git
+	4. cd Jenkins_Upgradev3/maven-samples/single-module/ and ls you can see the pox.xml file 
+	5. Copy the all file inside the Jenkin_Upgradev3 and paste in /home/jenkin_dev 
+	6. Push to git repository  
+	7 mvn validate 
+	8. mvn compile 
+	9. mvn test 
+	10. mvn clean install 
+	11. cd target/ 
+
+Create FreeStyle Job :--
+
+	1. Build_Java_Application -> Free Style Project -> ok
+	2. Description : This my First Java Project, Building from Maven
+	3. Discard old builds -> Days to keep builds : 30 -> Max # of builds to keep : 10
+	4. Source Code Management -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Branch Specifier : */master
+	6. Save -> Build Now -> Console Output
+	7. Configure -> Build Steps -> Execute shell
+		cd $WORKSPACE/maven-samples/single-module 
+		pwd 
+		ls 
+		mvn clean install
+	8. Save > Build the Job > Console Output
+	9. Again go to configure :
+		Execute shell :Invoke top-level Maven targets  
+		Goals (clean install) 
+		Advanced > POM > maven-samples/single-module/pom.xml 
+		Save > Build Now.
+	10. Post-build Actions -> Archive the artifacts -> maven-samples/single-module/target/*.jar
+	11. Save -> Build Now : Artifact will archive 
+ 	12. Post-build Actions -> Publish JUnit test result report -> maven-samples/single-module/target/surefire-reports/*.xml
+ 		Save -> Build Now : Latest Test Result (no failures)
+	13. Build Triggers -> Poll SCM (* * * * *) -> Every Minute Job will execute
+		Save -> Build Now : Git Polling Log
+	14. Build periodically -> */2 * * * * -> Job will Schedule every 2 Minute
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Jenkins Pipelines and Jenkins Files (Declarative Pipeline):--
+
+Step : Fetch the data -> Build the Code -> Test the Code -> Publish -> Deploy -> Config.xml -> Jenkins File System : Will store the xml file
+
+-> Build Process Configuration is not part of SCM.
+-> Change in Source in not sync with Build Process
+-> Branching benefits will not support in such case.
+-> Declarative Pipeline - Build code use jenkinfile format and can be managed with Source Control.
+
+
+Create Sample Pipeline Job :--
+	
+Create code in Git repository and push to GitHub Repository then create Pipeline	
+	
+	1. New Item -> Sample_Pipeline_Job -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> Jenkins_Pipelines_Jenkins_Files/Sample_jenkinsfile
+	6. Save -> Build Now -> Console Output
+	
+Demo: Modelling Workflows in Pipeline 2 :--
+	1. New Item -> Modelling_Demo1 -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> Jenkins_Pipelines_Jenkins_Files/Modeling_Workflow/jenkinsfile1
+	6. Save -> Build Now -> Console Output
+	7. Install pipiline-stage-view
+	8. Now you can see the Dashboard Stage View
+
+Demo: Modelling Workflows in Pipeline - Manually Approve Build Stages 3 :--
+
+	1. New Item -> Modelling_Demo2 -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> Jenkins_Pipelines_Jenkins_Files/Modeling_Workflow/jenkinsfile2
+	6. Save -> Build Now -> Console Output
+	7. Modelling_Demo2 -> Still Job is running due to Deploy? -> Target deployment environment -> Click on do it. (Approval require to go next)
+	8. Stage Logs (Declarative: Post Actions)
+
+Demo: Modelling Workflows in Pipeline - Run Multiple Stages in Parallel :--
+	
+	1. New Item -> Modelling_Demo3 -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> Jenkins_Pipelines_Jenkins_Files/Modeling_Workflow/jenkinsfile3
+	6. Save -> Build Now -> Console Output
+	7. You can deploy multiple stage under parallel Stage
+
+
+-> Stage - Environment Variable
+	Stage can use Environment Variable from own stage.
+	Stage can use Environment Variable from pipiline
+
+-> Input :-
+	Helps to implement Manual Quality Gate.
+	Can Help to Pass Dynamic Value to Stage.
+	Can Help to achieve Manual Approval of Important stage Execution
+
+-> Post Build :-
+	Execute after all the stages
+	It is conditional, so can help in post build cleanup or any specific user case.
+
+-> Parallel Stages :-
+	Stages can be execute in Parallel. Helps to improve the speed up the Build process
+	Multiple OS Build creation
+	Multi browser Test Execution etc.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Building Re-Usable Pipelines :--
+
+	1. New Item -> Build_App1 -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> reusable-pipelines/refactoring-pipeline/jenkinsfile1
+	6. Save -> Build Now -> Console Output
+	7. Go the path : Dashboard -> Build_App1 -> #2 -> /var/lib/jenkins/workspace/Build_App1 on built-in -> /java-tomcat-sample/target/
+	8. You can see the java-tomcat-sample-0.0.1.war	
+
+
+Demo : Refactor Jenkins Pipeline - Manage Build Version Dynamically:--
+	
+	1. New Item -> Build_App1 -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> reusable-pipelines/refactoring-pipeline/jenkinsfile2
+	6. Save -> Build Now -> Console Output
+	7. Go the path : Dashboard -> Build_App1 -> #2 -> /var/lib/jenkins/workspace/Build_App1 on built-in -> /java-tomcat-sample/target/
+	8. You can see the java-tomcat-sample-2.1.0-SNAPSHOT.war
+
+
+Demo : Refactor Jenkins Pipeline - Manage Release vs INT Builds and Artifacts :--
+
+	1. New Item -> Build_App1 -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> reusable-pipelines/refactoring-pipeline/jenkinsfile3
+	6. Save -> Build Now -> Console Output
+
+
+Demo : Refactor Jenkins Pipeline - Simplify Pipeline Functions:--
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+-> Multiple Ways to Manager Jenkins :--
+	One Big Jenkins Serve for all the Execution
+	Using Jenkins Farm. One master and many Slave Nodes.
+	Using Multiple Jenkins Server in combination of above.
+
+-> Structure Build Jobs :--
+	Single Build Pipeline for Test, Build, Package for every components.
+	One Build Job for Each Component.
+	Deployment of Product with Branching Stratigies.
+
+Admin Works :--
+	Hosting WebUI
+	Firing Jobs Triggers
+	Storing all Jobs Data
+
+-> Slaves Work for Execution Only
+-> Needs Multiple slaves for Specific Environment
+-> Infrastructure Cost is High.
+-> Maintenance is not easy and comes with High Costing.
+-> Failure in Agent can fails the Builds.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Distribution Builds in Jenkins :--
+
+➤ Your main Jenkins server is the master machine. The tasks performed by the master are :
+	➤ Scheduling build jobs.
+	➤ Dispatching builds to the slaves for the execution.
+	➤ Monitor the slaves.
+	➤ Recording and presenting the build results.
+	➤ Can also execute build jobs directly.
+
+➤ A slave is a Java executable that runs on a remote machine. The characteristics of the slave are :
+	➤ It hears requests from the Jenkins Master instance.
+	➤ Slaves can run on a variety of operating systems.
+	➤ The job of a Slave is to do as they are told to, which involves executing build jobs dispatched by the Master.
+	➤ We can configure a project to always run on a particular Slave machine or a particular type of Slave machine, or simply let Jenkins pick the next available Slave.
+
+➤ Create the Slave Node.
+➤ Master node will start the slave Agent on slave machine via SSH.
+➤ Automatic SSH Login without password form master to slave is needed.
+➤ Master Node will be running as a Specific User called Jenkins to start the slave agent
+➤ Jenkins Executor basic block which allow Jenkins Job to Execute on Node.
+➤ Executor is like a single Process which execute by master on slave machine to run build on slave.
+➤ This number executors specify the maximum number of concurrent builds that Jenkins may perform on Slave Node.
+
+In Slave Node :--
+	
+	sudo apt update 
+	sudo apt install fontconfig openjdk-17-jre
+
+Now go the the Jenkins and Add Slave1 Node:--
+	1. Dashboard -> Manage Jenkin -> Nodes -> New Nodes
+	2. Node name -> Slave1 -> Type -> Permanent Agent -> Create
+	3. Remote root directory -> /home/ec2-user/jenkins
+	4. Labels -> Linux
+	5. Usage -> Use this node as much as possible
+	6. Launch method -> Launch agent by connecting it to the controller
+	7. Host -> Slave Node IP Address -> Save
+	8. Copy the below Linux URL and run in slave Node
+	
+	curl -sO http://65.2.121.234:8080/jnlpJars/agent.jar
+java -jar agent.jar -url http://65.2.121.234:8080/ -secret 24b70c2e7fd9538fd0c06b024106ea1a4db23baef148e127e8f95b816de3e086 -name Slave1 -webSocket -workDir "/home/ec2-user/jenkins "
+	
+	9. Now Slave Node added
+		
+Label Nodes & Concurrent Builds:--
+	1. Dashboard -> Clock on + Icon New view -> Name : Concurrent Jobs
+	2. Type -> List View -> Create
+	3. Concurrent Jobs -> New Item -> Description
+	4. Discard old builds -> Days to keep builds : 5
+	5. Build Steps -> Execute shell
+	6. Create 5 Job Similarly
+	7. Now Build the Job, You can see Jobs are execute on Slave Node and Master Node
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Demo: Using Docker in Jenkins Pipeline
+
+Requirements -- 
+
+1. Jenkins Docker PlugIns
+    - Docker
+    - Docker Pipeline
+   	- Dashboard -> Manage Jenkins -> Plugins -> Available plugin -> Select Docker Version 1.9.0 and Docker Pipeline -> Install
+
+2. Install Docker Engine on Execution machine
+   Link -- https://docs.docker.com/engine/install/
+      
+   1. Set up Docker's apt repository.
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+	2. Install the Docker packages.
+		sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+3. Add Jenkins User to Group
+   sudo usermod -a -G docker jenkins
+
+4. Reboot your Machine
+   reboot
+
+5. Execute Docker using root User-
+   args '-u root'
+
+Create a Pipeline :--
+	1. New Item -> Docker_Pipeline -> Pipeline -> ok
+	2. Pipeline -> Define your Pipeline using Groovy directly or pull it from source control.
+	3. Definition -> Pipeline script from SCM
+	4. SCM -> Git -> Repository URL -> https://github.com/sspradhan8055/Jenkins_Upgradev3.git
+	5. Script Path -> reusable-pipelines/Powering_Pipeline_with_Docker/jenkinsfile1
+	6. Save -> Build Now -> Console Output
+	7. Check the Docker Images
+	
+
+Running Jenkins with Docker Containers :--
+	
+-> Prepare Jenkins Host Machine
+-> Install Docker on Jenkins Host Machine
+-> Install Jenkins as a Container
+
+Demo : Build Jenkins Docker Agents II - Commands
+	1. sudo systemctl disable firewalld
+	2. sudo systemctl enable --now docker
+	3. sudo usermod -aG docker jenkins
+	4. sudo chmod 666 /var/run/docker.sock
+
+Execute Jenkins Docker --
+
+	docker run -d -u root --privileged=true --volume /root/jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 --name jenkins-centos jenkins/jenkins:lts
+
+	

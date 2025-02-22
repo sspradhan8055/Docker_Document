@@ -1,0 +1,237 @@
+Docker
+
+Docker : Service Containers:--
+	➢ Module Outline
+	➢ The Bad Old Days
+	➢ VMware and Hypervisors
+	➢ Containers
+	➢ Docker
+	Potential OS Overhead:
+	- License Costs
+	- Admin
+	- Patching
+	- Updates
+	- Anti-Virus
+	- Many More …
+
+➢ Docker As a Technology -
+	○ Containers are VM Machines
+	○ Docker is running Apps inside the Containers
+➢ A Docker container is a lightweight, standalone, executable package that includes everything needed to run a piece of software, including the code, a runtime, system tools, libraries, and settings.
+➢ Docker containers are based on the concept of containerization, which is a technology for packaging and isolating applications and their dependencies from the underlying host system.
+➢ Docker As a Technology -
+	○ Docker CE - Community Edition
+	○ Docker EE - Enterprise Edition
+➢ Docker CE - Free, Community Support, Core containerization features , frequent release cycle, Limited Enterprise Features
+➢ Docker EE - Commercial Offering, Official Commercial support from Docker, Inc. , All CE features and extends them with enterprise-grade features, Highly reliable, secure, and compliance , Offers Advanced Management and Orchestration Tools.
+
+Installing The Right Docker for you:--
+
+	➢ Which Docker you will be using ?
+	➢ Docker Desktop - An Complete End-to-End Application for Docker Environment on Desktop Machine for Developers.
+	➢ Docker Engine - Docker Edition for Server side Installation, will be preferred for servers, cloud machines. It’s only compatible with Linux.
+	➢ Docker Desktop provides a simple interface that enables user to manage containers, applications, and images directly from local machine.
+	➢ What Docker Environment include in itself?
+		○ Docker Engine
+		○ Docker CLI Client
+		○ Docker Buildx
+		○ Docker Compose
+		○ Docker Content Trust
+		○ Kubernetes
+		○ Credential Helper
+	➢ Key Features of Desktop Docker
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DOCKER DESKTOP INSTALLATION :--
+
+Docker Desktop Installation For Mac Machine:--
+	Step 1 : https://www.docker.com/
+	Step 2 : Download for Mac - Intel Chip
+	Step 3 : Download the installer using the download buttons at the top of the page, or from the release notes.
+		Double-click Docker.dmg to open the installer, then drag the Docker icon to the Applications folder. By default, Docker Desktop is installed at /Applications/Docker.app.
+		Double-click Docker.app in the Applications folder to start Docker.
+		The Docker menu displays the Docker Subscription Service Agreement.
+		Select Accept to continue.
+
+DOCKER ENGINE INSTALLATION :--
+
+Required SetUp for Docker Engine Installation:--
+	➢ Requirement to Install Docker Engine ?
+	➢ Docker Engine Installation requires Linux/Ubuntu Server.
+		1. Create 1 Instance in AWS and connect it to Terminal.
+		2. To install Docker Engine, you need the 64-bit version of one of these Ubuntu versions:
+			Ubuntu Oracular 24.10
+			Ubuntu Noble 24.04 (LTS)
+			Ubuntu Jammy 22.04 (LTS)
+			Ubuntu Focal 20.04 (LTS)
+		3. Before you can install Docker Engine, you need to uninstall any conflicting packages.
+			for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+		4. Installation methods: 
+			https://docs.docker.com/engine/install/ubuntu/#install-from-a-package
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+		6. sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+		7. sudo docker run hello-world
+		8. docker --verion
+		9. docker ps -a : to check the running images
+
+	➢ Mechanism to Connect Server, tools like - Putty, MobaXterm for Windows.
+	➢ Check Docker Install and Configurations:
+		docker version
+	➢ Verify Docker Engine SetUp & Details
+		docker info
+	➢ List all Docker commands
+		docker
+		docker image -help
+		docker container ls : To check the running container
+		docker container ls -a : To check the all continer
+	➢ Docker Management commands format
+		docker <command> <sub-command>(Optional)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+➢ Why Containers required?
+	○ Containers are required for efficient and consistent application deployment and management, ensuring portability and scalability across different environments.
+➢ What is Container Image?
+	○ A container image is a lightweight, standalone package that includes everything needed to run a piece of software, including code, runtime, system tools, and libraries.
+	○ Containers is an running instance of an Image.
+	○ You can have many containers running the same image.
+➢ Introduction of Docker Central Repository.
+	Docker Hub.	
+	Login Docker Hub and search Docker Official Image to pull the Images
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DOCKER CONTAINER RUN APPLICATION :--
+
+
+Execute Your Application in Container:--
+
+➢ We will be using Open Source Nginx Web-Server
+➢ Start Nginx web-server in Docker
+	docker container run - -publish <host_port:container_port> <image_name>
+➢ Stop Container foreground process
+	ctrl+c
+➢ Start Container in Background or detach mode
+	docker container run - -publish <host_port:container_port> - -detach <image_name>	
+➢ List running Containers
+	docker container ls
+	docker ps (Old Way)
+
+➢ Learn Docker CLI to manage Docker.
+➢ Docker Stop Docker Containers
+	docker container stop <container_id>
+➢ List all running and stopped containers 
+	docker containers ls
+	docker containers ls -a
+➢ Run vs Start Container
+	run: start a new container always
+	start: start a existing containers
+
+PROCESS:--	
+
+	1. docker search nginx : To check the Office images in Locally 
+	2. docker pull nginx : To Download the image from Docker Hub Repository
+	3. docker container run --publish 8080:80 nginx : To run the docker container
+	5. http://13.233.145.58:8080/ : You can see the Nginx web Pages
+	5. ctrl c to exit
+	6. Start Container in Background or detach mode
+		docker container run --publish 8080:80 --detach nginx
+		http://13.233.145.58:8080/
+		docker ps
+		docker container ls
+	7. docker container ls -a : List all running
+	8. docker container stop peaceful_napier : Stop the container
+	9. docker container start b3c78957810c : Start the container
+
+-----------
+➢ Docker container names
+	docker container run - -publish 80:80 - -detach - -name <Name> <Image_Name>
+➢ See logs of a specific container 
+	docker container logs <container_name>/<container_id>
+➢ See process running inside the containers
+	docker container top <container_id>
+➢ Remove all unused containers
+	docker container rm <space separated container ids>
+------------	
+	
+	10. docker container run -p 8080:80 -d --name nginx nginx : docker container names
+	11. docker container logs 8c214560482c : See logs of a specific container
+	12. docker container top  8c214560482c : See process running inside the containers
+	13. ps -ef | grep nginx : To check the running the process inside the container
+	14. docker container rm 467a289b8c74 charming_yalow peaceful_napier : Remove all unused containers
+	
+--------------
+
+Start a mysql server instance:--
+
+	1. docker run --name custom-mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+	2. ps -ef | grep mysql
+	3. docker exec -it custom-mysql /bin/bash
+	4. mysql -uroot -p
+	5. Enter password:
+	6. docker exec -it custom-mysql mysql -uroot -p : Direct you can connect
+	7. show databases;
+
+--------------
+ Execute Commands in Running Container:--
+ 
+ ➢ Start Container in Interactive Mode
+	docker run -it [image_name or image_id] [command]
+	-> -i: Keep STDIN open even if not attached.
+	-> -t: Allocate a pseudo-TTY (terminal).
+➢ Run Commands in Running Containers
+	docker exec [options] [container_name or container_id] [command]
+	-> [options]: Additional options you may want to include.
+	-> [container_name or container_id]: The name or ID of the running container.
+	-> [command]: The command to be executed inside the container.
+--------------	
+	
+	PROCESS :--
+	1. docker container start 6982064078bd
+	2. docker container run -p 8080:80 -d -it --name nginx nginx : tart Container in Interactive Mode
+	3. docker container run -p 8080:80 -d -it --name nginx nginx /bin/bash : Enter the inside the container
+	4. docker exec -it ed4d75930a7b bash : Enter the inside the container
+	5. find / -name "index.html"
+	6. cat /usr/share/nginx/html/index.html
+	7. docker exec -it custom-mysql touch /tmp/sudhansu : Create file inside the Container
+	8. docker exec -it custom-mysql /bin/bash
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+How Containers are Different from VMs:--
+
+➢ Containers and virtual machines both have similar resource allocation and allocation benefits.
+➢ Containers and VMs are functionally different because containers virtualise the Operating System and VMs are virtualise the hardware.
+➢ Containers are more portable.
+➢ Containers are just processes.
+➢ Containers are limited what resources they can access.
+➢ Exit when process exits.
+
+Docker Container Monitoring:--
+
+➢ View Docker container Resource Consumption
+	docker stats [container_name or container_id]
+➢ Get detailed information about a container
+	docker inspect [container_name or container_id]
+	
+	1. docker stats nginx : View Docker container Resource Consumption
+	2. docker top nginx : View the running resource
+	3. docker inspect custom-mysql : Get detailed information about a container
+	
+
+
+	

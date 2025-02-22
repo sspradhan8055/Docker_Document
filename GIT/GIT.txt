@@ -1,0 +1,266 @@
+1) Git Installation
+2) Initialisation, Add Github repository
+3) Basic Operation – status, add, commit, push
+4) Delete Operation
+5) Tagging, Versioning
+6) Branching, Parallel development
+7) Git clone, Git pull
+8) AWS Amplify
+9) Code commit
+
+
+
+GIT & GITHub : Version Control System
+
+Git Repository : GIT Repository contains Files, History, Config Managed by GIT.
+
+➤ Stage of GIT :--
+	➤ Working Directory
+	➤ Staging Area
+	➤ Git Directory
+
+➤ Working Directory - Area of Live Files, also known as Untracked area of GIT.
+➤ Staging Area - Staging Area is when git starts tracking and saving changes that occur in files.
+➤ Git Directory - Also called ‘local Repo’, is your .git repo. It’s area where GIT save everything.
+
+➤ Remote Repository - GITHub
+	➤ Remote repository is stored on a code hosting service like GitHub or on an internal server.
+	➤ Branch in GIT - Branch in Git is a way to keep developing and coding a new feature or modification to the software and still not aﬀecting the main part of the project.
+
+➤ GIT is free, open source version control system.
+	➤ Version Control System - VCS helps a software team manage changes to source code over time.
+	➤ Version control software keeps track of every modification to the code in a special kind of database.
+	➤ VCS System helps team to rollback to previous version in case of any issue with specific Version.
+	➤ Need of Version Control System.
+
+➤ Types of VCS
+	➤ Centralized Version Control System (CVCS)
+	➤ Distributed Version Control System (DVCS)
+	➤ Centralized VCS - CVCS uses a central server to store all files and enables team collaboration.
+	➤ CVCS works on a single repository to which users can directly access a central server.
+
+➤ Here Each Work Station is connect with Central Code Repository.
+➤ Drawbacks - It is not locally available.
+➤ Crash of CVCS will result in losing the entire data of the project.
+
+➤ Distributed Version Control System-
+	➤ In Distributed VCS, every contributor has a local copy or “clone” of the main repository.
+	➤ User can change and commit local Repo without any interference.
+	➤ User can update their local Repo from the Central Server.
+	➤ User can update the Central Server from their Repo.
+
+➤ Operations in DVCS are fast.
+	➤ New changes can be done locally without manipulating the central data.
+	➤ If the central server gets crashed at any point of time, the lost data can be easily recovered from any one of the contributor’s local repositories.
+
+
+➤ Types of VCS
+	➤ Centralized Version Control System (CVCS)
+	➤ Distributed Version Control System (DVCS)
+	➤ Centralized VCS - CVCS uses a central server to store all files and enables team collaboration.
+	➤ CVCS works on a single repository to which users can directly access a central server.
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+start a working area (see also: git help tutorial)
+   clone     Clone a repository into a new directory
+   init      Create an empty Git repository or reinitialize an existing one
+
+work on the current change (see also: git help everyday)
+   add       Add file contents to the index
+   mv        Move or rename a file, a directory, or a symlink
+   restore   Restore working tree files
+   rm        Remove files from the working tree and from the index
+
+examine the history and state (see also: git help revisions)
+   bisect    Use binary search to find the commit that introduced a bug
+   diff      Show changes between commits, commit and working tree, etc
+   grep      Print lines matching a pattern
+   log       Show commit logs
+   show      Show various types of objects
+   status    Show the working tree status
+
+grow, mark and tweak your common history
+   branch    List, create, or delete branches
+   commit    Record changes to the repository
+   merge     Join two or more development histories together
+   rebase    Reapply commits on top of another base tip
+   reset     Reset current HEAD to the specified state
+   switch    Switch branches
+   tag       Create, list, delete or verify a tag object signed with GPG
+
+collaborate (see also: git help workflows)
+   fetch     Download objects and refs from another repository
+   pull      Fetch from and integrate with another repository or a local branch
+   push      Update remote refs along with associated objects
+   
+   
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GIT CONFIGURE :--
+
+	git config --global user.name "sspradhan8055"
+	git config --global user.email "sspradhan8055@gmail.com"
+	git config --list
+
+CREATE LOCAL DIRECTORY :--
+	
+		cd /Users/sspradhan/Desktop/DevOps/GIT_V1
+		git init
+		Initialized empty Git repository in /Users/sspradhan/Desktop/DevOps/GIT_V1/.git/
+		ls -a : Check the Git directory
+		
+GIT Commit :--
+		
+	1. Create file in local director
+	2. git status 			->  nothing added to commit but untracked files present (use "git add" to track)
+	3. git add GIT.txt 		-> 	Add to untracked to tracked
+	4. git status 			->  Changes to be committed
+	5. Add some file in the existing file
+	6. git status 			->  Changes to be committed:
+	7. git commit -m "My First code"  
+	8. git status			-> nothing to commit, working tree clean
+	9. git diff 			-> To check the different
+	10. got add .			-> To add all file untracked to tracked
+	11. git log				-> TO check the all users logs
+	12. git log --author="sspradhan8055@gmail.com"  -> To check the logs particular users
+	
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+GIT with GITHUB :--
+
+-> GitHub is a website and cloud-based services that helps developers store and manager their code, as well as track and control changes ti their code.
+-> GitHub is Remote repository for your code base.
+
+	1. Create a new repository on GitHub portal.
+	2. Copy the https://github.com/sspradhan8055/Git-V1.git
+	3. git clone -b main https://github.com/sspradhan8055/Git-V1.git - Clone from GitHub to Local
+	4. git pull			-> Create some file in GitHub and check in Local 
+	5. git push			-> Create some file in Local and push to GitHub
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Auto Credential
+	1. git config credential.helper store
+	2. git push https://github.com/owner/repo.git
+	3. Username for 'https://github.com': <USERNAME>
+	4. Password for 'https://USERNAME@github.com': <PASSWORD>
+	5. using this we need not give user name and password every time
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GIT BRANCH :--
+
+➤ Isolating features into different branches is a crucial practice for any serious developer.
+➤ At some point, a piece of code will reach a state where you'll want to integrate it with the rest of the project. This is where the git merge command comes in.
+
+	1. git branch
+	2. git branch develop 			->  To creation of Branching
+	3. git switch develop			-> 	Changing the branch
+	4. git branch					-> 	* develop, Current active branch
+	5. touch Sampletestfile1.txt	-> 	Create file in current branch
+	6. git push origin develop		-> 	Push to Github
+	7. git switch main				-> 	Changing the branch to main
+	
+	Merge Branches in GIT
+	
+	1. git switch main
+	2. git merge develop			-> 	Merge from develop to Mail branch
+	3. ls							->	You can see all file merge to Main branch which is available in Develop branch
+	4. git push						-> 	You can check on GitHub also all files are replicated
+	
+	Switch Branch in GIT 			->  git checkout brnach_name
+	Rename Branch					->  git branch -m Old_name New_name
+	Delete Branch					-> 	git branch -d brnach_name 
+	
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+GIT REVERT :--
+
+	➤ Revert is all about to Undo the changes, you did in repo.
+	➤ In GIT this can be done via RESET and REVERT.
+	➤ RESET - Practically, user can think of it as a “rollback”.
+	➤ Reset points local environment back to a previous commit.
+
+ 	REVERT - Net effect of the git revert command is similar to reset, but its approach is different.
+	➤ Revert adds a new commit at the end of the chain to "cancel" changes.
+	➤ Revert or Reset ?
+	➤ If user have already pushed commits to the remote repo, a revert is a nicer way to cancel out changes.
+	➤ Git workflow works well for picking up additional commits at the end of a branch, but it can be challenging if a set of commits is no longer seen in the chain when someone resets the branch pointer back.
+	➤ If Commit in local then Reset is good, If commit is pushed then revert is good option.
+	
+	1. Nano SampleTestFile1.txt : Create a to file 
+	2. git commit -am "added new file" 
+	
+	Again modify some file : 
+	1. git commit -am "Commit Reset 2" 
+	2. git log --oneline : To check the updated Commit ID 
+	3. git reset --soft 7f0b48e : Only reset the history of the file 
+	4. git reset --hard b685eda : revert the modified file as well as history. 
+	5. git status (cat Sampletestfile2.txt) : You can see created file has been deleted 
+	6. git revert HEAD
+	
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GIT STASH : 
+	
+	➤ Git stash temporarily saves changes you've made to your working copy so you can work on something else, and then come back and re-apply them later on. Stashing is handy if you need to quickly switch context and work on something else, but you're mid-way through a code change and aren't quite ready to commit.
+	➤ Git stash
+	➤ Git stash list
+	➤ Git stash apply
+	➤ Git stash drop
+	
+	1. echo "This is Stash lecture, change in file 1” >> SampleTestFile2.txt 
+	2. echo "This is Stash lecture, change in file 2” >> SampleTestFile1.txt 
+	3. git stash				-> It will stash the file
+	4. echo "This is Stash lecture, change in Main File" >> Samplefilemain.txt : Changes some file
+	5. git commit -am "Urgent Fix changes" 
+	6. git push 
+	7. git stash list 			-> check the how many file has been stash 
+	8. git stash apply 			-> Resume the file 
+	9. cat SampleTestFile1.txt  -> You can see the change file which was not present at earlier 
+		git commit -am "Stash changes"
+		git push
+		git status
+		git stash list
+	10. git stash drop 			-> Delete the stash 
+		git stash list
+
+
+Stash Untracked Files & Git Stash Pop :--
+
+	1. echo "This is Stash lecture change for untracked in File 1" >> Sampletestfile1.txt
+		git status
+	2. echo "This is Stash lecture change for untracked in File 1" >> Sampletestfile3.txt
+		git status (modified:   Sampletestfile1.txt), (Untracked files: Sampletestfile3.txt)
+	3. git stash -a 			-> to stash all the file which is tracked and untracked file
+		git stash list
+	4. git stash pop 			-> revert last stash file as well as remove from stash area
+		git stash list
+		
+	➤ Stash with Message :
+		git stash save “message text”
+	➤ Find Changes Done in Specific Stash.
+		git stash show stash@{index}
+	➤ Apply Specific Stash
+		git stash apply stash@{index}
+		
+	5. git stash save "Change in Sampletestfile1.txt" : It will show the description 
+		git stash list 			-> stash@{0}: On main: Change in Sampletestfile1.txt
+	6. git stash -a save “Change in SampleTestile3.txt” : It will show the description
+		git status
+		git stash list
+	7. git stash -a 
+	8. git stash list 
+	9. git stash show stash@(1) : It will show only track file this will not work for untracked file 
+	10. git stash pop stash@(1)  : Only 1 file will revert 
+
+

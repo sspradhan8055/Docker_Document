@@ -1,0 +1,97 @@
+Manage Docker Networking :--
+
+➢ Docker Network : Connect Containers to Other Containers and Connect Containers to Host machine.
+➢ Docker containers and services can be connected with each other.
+➢ Containers and Services don’t need to be aware, where they are deployed.
+➢ Container and Services can communicate, Whether your Docker hosts run Linux, Windows, or a mix of OS.
+➢ Each Container connect to virtual private network called ‘bridge’.
+➢ bridge : This is default Network driver of Docker.
+➢ Containers which are deployed in default bridge network will able to communicate with each other by using the IP addresses.
+➢ Bridge network is an isolated with in the cluster the containers in different clusters can’t communicate with the container in the different cluster.
+➢ Best Practice to create Networks :
+	-> network “sql_php_nwt” for mySQL and PHP Containers
+	-> network “mongo_nwt” for mongo and PHP Containers
+
+PRATICAK for Bridge Network :--
+
+	1. docker run -it -d -p 8081:80 --name nginx1 nginx
+	2. docker run -it -d -p 8082:80 --name nginx2 nginx
+	3. docker inspect nginx1 : You can see Networks Bridge and IPAddress
+	4. docker exec -it 36595e8fdcc6 /bin/bash : Inside the container and check the IP Address
+	5. apt-get update -y, apt-get install -y iputils-ping
+	6. ping 172.17.0.3 : Now pinging nginx1 to nginx2
+
+----------------
+
+➢ Bridge Networking: By default, containers are connected to a Docker bridge network, allowing them to communicate with each other on the same host.
+However, containers on different hosts cannot communicate without additional configuration.
+➢ Overlay Networking: This model enables communication between containers across different hosts. Technologies like VXLAN or IPSec are often used to create virtual networks that span multiple hosts.
+➢ Container Network Interfaces (CNI): CNI is a specification that defines how container runtimes interact with networking plugins. It allows different container runtimes to be combined with various networking solutions.
+
+➢ Start Container to allow traffic from Port on Host Machine
+	docker container run -p <host_port>:<docker_port> -d image
+➢ Find the traffic and protocol on container
+	docker port <container_id>
+➢ Find Docker Container IP
+	docker inspect <container_id>
+
+----------------
+
+	7. docker port nginx1 : Find the traffic and protocol
+	8. docker inspect nginx1 -f {{.NetworkSettings.IPAddress}} : Find Docker Container IP
+
+----------------
+
+➢ Show All networks
+	docker network ls
+➢ Filter the Networks
+	To Filter all bridge network
+	docker network -f drive=bridge
+➢ To find all Network IDs and Drivers
+	docker network ls --format "{{.ID}}: {{.Driver}}
+➢ Inspect any Network
+	docker network inspect
+
+Commands:
+  connect     Connect a container to a network
+  create      Create a network
+  disconnect  Disconnect a container from a network
+  inspect     Display detailed information on one or more networks
+  ls          List networks
+  prune       Remove all unused networks
+  rm          Remove one or more networks
+  
+----------------
+	
+	9. docker network ls : Show All networks
+	10. docker network ls -f driver=bridge : Filter the Networks
+	11. docker network ls -f name=bridge
+	12. docker network create mytest_network : To Create Network
+	13. docker network ls
+	14. docker network inspect mytest_network : Inspect any Network
+	15. docker network inspect bridge : TO check all the containers is running
+	16. docker network rm mytest_network3 : Remove the Network
+	17. docker netowrk rm bridge : bridge is a pre-defined network and cannot be removed
+	18. docker network prune : This will remove all custom networks not used by at least one container
+
+----------------
+
+➢ DNS stands for Domain Name System.
+➢ DNS is how domain names are translated into IP addresses.
+➢ DNS is what allows you to use your web browser to find web sites.
+➢ DNS makes it possible for us to use easy to remember domain names in place of complex IP addresses.
+➢ Containers uses DNS to communicate.
+➢ Containers don’t use IP address to Communicate.
+
+----------------
+
+	19. docker network create dns_bridge
+	20. docker run -it -d --network dns_bridge -p 8088:80 --name alpine1 nginx:alpine
+	21. docker run -it -d --network dns_bridge -p 8099:80 --name alpine2 nginx:alpine
+	22. docker inspect alpine1
+	23. docker network inspect dns_bridge : You can check 2 containers is running on same network
+	24. docker exec -it alpine1 ping alpine2 : We are able to ping with dns name
+	25. docker exec -it alpine2 ping alpine1
+	26. docker exec -it alpine2 ping nginx1 : Not ping due to different network
+	
+	
